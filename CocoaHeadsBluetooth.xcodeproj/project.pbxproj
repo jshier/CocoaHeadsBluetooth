@@ -8,11 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		317191D71ABA2D5D00BD9A91 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317191D61ABA2D5D00BD9A91 /* AppDelegate.swift */; };
-		317191D91ABA2D5D00BD9A91 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317191D81ABA2D5D00BD9A91 /* ViewController.swift */; };
 		317191DC1ABA2D5D00BD9A91 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 317191DA1ABA2D5D00BD9A91 /* Main.storyboard */; };
 		317191DE1ABA2D5D00BD9A91 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 317191DD1ABA2D5D00BD9A91 /* Images.xcassets */; };
 		317191E11ABA2D5D00BD9A91 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 317191DF1ABA2D5D00BD9A91 /* LaunchScreen.xib */; };
 		317191ED1ABA2D5E00BD9A91 /* CocoaHeadsBluetoothTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317191EC1ABA2D5E00BD9A91 /* CocoaHeadsBluetoothTests.swift */; };
+		31E50CCF1ABBB5D7006F99C7 /* PeripheralsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31E50CCE1ABBB5D7006F99C7 /* PeripheralsTableViewController.swift */; };
+		31E80F5D1ABB47BF00BB95C8 /* PeripheralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31E80F5C1ABB47BF00BB95C8 /* PeripheralViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,13 +30,14 @@
 		317191D11ABA2D5D00BD9A91 /* CocoaHeadsBluetooth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CocoaHeadsBluetooth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		317191D51ABA2D5D00BD9A91 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		317191D61ABA2D5D00BD9A91 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		317191D81ABA2D5D00BD9A91 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		317191DB1ABA2D5D00BD9A91 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		317191DD1ABA2D5D00BD9A91 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		317191E01ABA2D5D00BD9A91 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		317191E61ABA2D5E00BD9A91 /* CocoaHeadsBluetoothTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CocoaHeadsBluetoothTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		317191EB1ABA2D5E00BD9A91 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		317191EC1ABA2D5E00BD9A91 /* CocoaHeadsBluetoothTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocoaHeadsBluetoothTests.swift; sourceTree = "<group>"; };
+		31E50CCE1ABBB5D7006F99C7 /* PeripheralsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralsTableViewController.swift; sourceTree = "<group>"; };
+		31E80F5C1ABB47BF00BB95C8 /* PeripheralViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,7 +80,8 @@
 			isa = PBXGroup;
 			children = (
 				317191D61ABA2D5D00BD9A91 /* AppDelegate.swift */,
-				317191D81ABA2D5D00BD9A91 /* ViewController.swift */,
+				31E50CCE1ABBB5D7006F99C7 /* PeripheralsTableViewController.swift */,
+				31E80F5C1ABB47BF00BB95C8 /* PeripheralViewController.swift */,
 				317191DA1ABA2D5D00BD9A91 /* Main.storyboard */,
 				317191DD1ABA2D5D00BD9A91 /* Images.xcassets */,
 				317191DF1ABA2D5D00BD9A91 /* LaunchScreen.xib */,
@@ -213,7 +216,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				317191D91ABA2D5D00BD9A91 /* ViewController.swift in Sources */,
+				31E50CCF1ABBB5D7006F99C7 /* PeripheralsTableViewController.swift in Sources */,
+				31E80F5D1ABB47BF00BB95C8 /* PeripheralViewController.swift in Sources */,
 				317191D71ABA2D5D00BD9A91 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
