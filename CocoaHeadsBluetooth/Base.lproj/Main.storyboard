@@ -127,36 +127,103 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Z4-EH-Ym1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="773" y="584"/>
+            <point key="canvasLocation" x="736" y="577"/>
         </scene>
         <!--Peripherals-->
         <scene sceneID="UaW-X5-Ig7">
             <objects>
                 <tableViewController storyboardIdentifier="PeripheralsTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="yKS-ym-LnN" customClass="PeripheralsTableViewController" customModule="CocoaHeadsBluetooth" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="ntf-Ov-pJo">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="134" sectionHeaderHeight="22" sectionFooterHeight="22" id="ntf-Ov-pJo">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="PeripheralCell" textLabel="BWE-dd-EhH" detailTextLabel="Ajm-S0-39p" style="IBUITableViewCellStyleSubtitle" id="1qN-0K-XSZ">
+                            <tableViewCell contentMode="scaleToFill" restorationIdentifier="PeripheralTableViewCell" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="PeripheralCell" rowHeight="134" id="1qN-0K-XSZ" customClass="PeripheralTableViewCell" customModule="CocoaHeadsBluetooth" customModuleProvider="target">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1qN-0K-XSZ" id="YBv-m0-RtL">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="BWE-dd-EhH">
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Connectable:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dIb-XH-NWZ">
+                                            <rect key="frame" x="8" y="83" width="86" height="17"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ajm-S0-39p">
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Other:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zJF-UK-III">
+                                            <rect key="frame" x="8" y="108" width="41" height="17"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="No Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OQ9-VK-tQB">
+                                            <rect key="frame" x="8" y="8" width="551" height="17"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="RSSI" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yFG-Tv-Zp9">
+                                            <rect key="frame" x="53" y="58" width="507" height="17"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="No" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qKZ-o0-9y1">
+                                            <rect key="frame" x="102" y="83" width="449" height="17"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="None" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ut-d8-lPY">
+                                            <rect key="frame" x="57" y="108" width="503" height="17"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RSSI:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kdG-yM-K2l">
+                                            <rect key="frame" x="8" y="58" width="37" height="17"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="UUID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C3B-OF-Oz6">
+                                            <rect key="frame" x="8" y="33" width="551" height="17"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="zJF-UK-III" firstAttribute="top" secondItem="dIb-XH-NWZ" secondAttribute="bottom" constant="8" id="8z7-RA-guk"/>
+                                        <constraint firstItem="yFG-Tv-Zp9" firstAttribute="leading" secondItem="kdG-yM-K2l" secondAttribute="trailing" constant="8" id="A7z-bT-vI9"/>
+                                        <constraint firstAttribute="trailing" secondItem="yFG-Tv-Zp9" secondAttribute="trailing" constant="8" id="DGr-8s-ZIA"/>
+                                        <constraint firstItem="6Ut-d8-lPY" firstAttribute="leading" secondItem="zJF-UK-III" secondAttribute="trailing" constant="8" id="Ey1-OO-XYP"/>
+                                        <constraint firstItem="6Ut-d8-lPY" firstAttribute="baseline" secondItem="zJF-UK-III" secondAttribute="baseline" id="Fee-Gl-Baj"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="qKZ-o0-9y1" secondAttribute="trailing" constant="8" id="J2d-4C-4bs"/>
+                                        <constraint firstItem="C3B-OF-Oz6" firstAttribute="top" secondItem="OQ9-VK-tQB" secondAttribute="bottom" constant="8" id="KBl-rJ-xLj"/>
+                                        <constraint firstItem="qKZ-o0-9y1" firstAttribute="leading" secondItem="dIb-XH-NWZ" secondAttribute="trailing" constant="8" id="Qad-rA-R5c"/>
+                                        <constraint firstItem="dIb-XH-NWZ" firstAttribute="leading" secondItem="zJF-UK-III" secondAttribute="leading" id="Rka-SA-ccR"/>
+                                        <constraint firstItem="OQ9-VK-tQB" firstAttribute="leading" secondItem="C3B-OF-Oz6" secondAttribute="leading" id="S80-Nl-75q"/>
+                                        <constraint firstAttribute="trailing" secondItem="6Ut-d8-lPY" secondAttribute="trailing" constant="8" id="Vv2-bD-PVL"/>
+                                        <constraint firstItem="dIb-XH-NWZ" firstAttribute="leading" secondItem="kdG-yM-K2l" secondAttribute="leading" id="b9f-kd-pcy"/>
+                                        <constraint firstItem="dIb-XH-NWZ" firstAttribute="top" secondItem="kdG-yM-K2l" secondAttribute="bottom" constant="8" id="ces-Ff-7fb"/>
+                                        <constraint firstItem="dIb-XH-NWZ" firstAttribute="baseline" secondItem="qKZ-o0-9y1" secondAttribute="baseline" id="crT-XU-uog"/>
+                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="zJF-UK-III" secondAttribute="bottom" constant="8" id="deb-0x-kEJ"/>
+                                        <constraint firstItem="C3B-OF-Oz6" firstAttribute="leading" secondItem="kdG-yM-K2l" secondAttribute="leading" id="eZT-RT-69f"/>
+                                        <constraint firstItem="OQ9-VK-tQB" firstAttribute="leading" secondItem="YBv-m0-RtL" secondAttribute="leading" constant="8" id="gn4-w2-v6c"/>
+                                        <constraint firstItem="OQ9-VK-tQB" firstAttribute="top" secondItem="YBv-m0-RtL" secondAttribute="top" constant="8" id="lzJ-pE-sDy"/>
+                                        <constraint firstAttribute="trailing" secondItem="OQ9-VK-tQB" secondAttribute="trailing" constant="8" id="ncW-vI-IM4"/>
+                                        <constraint firstAttribute="trailing" secondItem="C3B-OF-Oz6" secondAttribute="trailing" constant="8" id="njP-9W-SrX"/>
+                                        <constraint firstItem="kdG-yM-K2l" firstAttribute="top" secondItem="C3B-OF-Oz6" secondAttribute="bottom" constant="8" id="oGv-HA-Y4E"/>
+                                        <constraint firstItem="yFG-Tv-Zp9" firstAttribute="baseline" secondItem="kdG-yM-K2l" secondAttribute="baseline" id="qJE-NG-ERw"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="RSSILabel" destination="yFG-Tv-Zp9" id="z50-1q-esv"/>
+                                    <outlet property="UUIDLabel" destination="C3B-OF-Oz6" id="7zC-xY-o7I"/>
+                                    <outlet property="connectableLabel" destination="qKZ-o0-9y1" id="Z8O-zO-EOW"/>
+                                    <outlet property="nameLabel" destination="OQ9-VK-tQB" id="1t7-zk-ivA"/>
+                                    <outlet property="otherLabel" destination="6Ut-d8-lPY" id="bVJ-4z-XAD"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
