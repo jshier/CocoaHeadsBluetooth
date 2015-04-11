@@ -128,7 +128,7 @@ class PeripheralsTableViewController: UITableViewController, CBCentralManagerDel
         println("Peripheral connected: \(peripheral.name ?? peripheral.identifier.UUIDString)")
         connectionAttemptTimer?.invalidate()
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let peripheralViewController = storyboard.instantiateViewControllerWithIdentifier("PeripheralViewController") as PeripheralViewController
+        let peripheralViewController = storyboard.instantiateViewControllerWithIdentifier("PeripheralViewController") as! PeripheralViewController
         peripheralViewController.peripheral = peripheral
         navigationController?.pushViewController(peripheralViewController, animated: true)
     }
@@ -162,7 +162,7 @@ class PeripheralsTableViewController: UITableViewController, CBCentralManagerDel
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("PeripheralCell", forIndexPath: indexPath) as PeripheralTableViewCell
+        var cell = tableView.dequeueReusableCellWithIdentifier("PeripheralCell", forIndexPath: indexPath) as! PeripheralTableViewCell
         
         if let visibleUUID = visiblePeripheralUUIDs[indexPath.row] as? String {
             if let visiblePeripheral = visiblePeripherals[visibleUUID] {

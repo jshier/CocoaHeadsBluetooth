@@ -82,8 +82,8 @@ class PeripheralViewController: UIViewController, CBPeripheralDelegate, UITableV
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("ServiceCell", forIndexPath: indexPath) as UITableViewCell
-        let service = peripheral.services[indexPath.row] as CBService
+        let cell = tableView.dequeueReusableCellWithIdentifier("ServiceCell", forIndexPath: indexPath) as! UITableViewCell
+        let service = peripheral.services[indexPath.row] as! CBService
         println("Service UUID Description: \(service.UUID.description)")
         cell.textLabel?.text = service.UUID.description
         
