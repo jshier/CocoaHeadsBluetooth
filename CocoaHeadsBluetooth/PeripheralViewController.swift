@@ -18,6 +18,7 @@ class PeripheralViewController: UIViewController, CBPeripheralDelegate, UITableV
     @IBOutlet weak var tableView: UITableView!
     
     var peripheral: CBPeripheral!
+    var RSSIRefreshTimer: NSTimer?
     
     override func viewDidLoad() {
         tableView.dataSource = self
@@ -28,11 +29,19 @@ class PeripheralViewController: UIViewController, CBPeripheralDelegate, UITableV
         
         nameLabel.text = peripheral.name ?? "No Name"
         UUIDLabel.text = peripheral.identifier.UUIDString
-        RSSILabel.text = "\(peripheral.RSSI)"
         
         peripheral.delegate = self
         peripheral.readRSSI()
         peripheral.discoverServices(nil)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        RSSIRefreshTimer?.invalidate()
+    }
+    
+    func refreshRSSI() {
+        println("Firing RSSI update.")
+        peripheral.readRSSI()
     }
     
     func peripheral(peripheral: CBPeripheral!, didDiscoverServices error: NSError!) {
@@ -42,7 +51,13 @@ class PeripheralViewController: UIViewController, CBPeripheralDelegate, UITableV
         }
         else {
             println("\(peripheral.services)")
-            tableView.reloadData()
+            dispatchMain {
+                self.tableView.reloadData()
+            }
+            for service in peripheral.services {
+                peripheral.discoverIncludedServices(nil, forService: service as! CBService)
+                peripheral.discoverCharacteristics(nil, forService: service as! CBService)
+            }
         }
         
         // Uncomment the below code if you want to look for a characteristic named Battery. Found on a FitBit Flex, for example.
@@ -59,6 +74,21 @@ class PeripheralViewController: UIViewController, CBPeripheralDelegate, UITableV
 //        peripheral.readValueForCharacteristic(characteristic)
 //        peripheral.setNotifyValue(true, forCharacteristic: characteristic) 
 //    }
+    func peripheral(peripheral: CBPeripheral!, didDiscoverIncludedServicesForService service: CBService!, error: NSError!) {
+        println("Discovered included services: \(service.includedServices) for services: \(service)")
+    }
+    
+    func peripheral(peripheral: CBPeripheral!, didDiscoverCharacteristicsForService service: CBService!, error: NSError!) {
+        println("Discovered characteristics: \(service.characteristics) for service: \(service)")
+        
+        for characteristic in service.characteristics as! Array<CBCharacteristic> {
+            peripheral.discoverDescriptorsForCharacteristic(characteristic)
+        }
+    }
+    
+    func peripheral(peripheral: CBPeripheral!, didDiscoverDescriptorsForCharacteristic characteristic: CBCharacteristic!, error: NSError!) {
+        println("Discovered descriptors: \(characteristic.descriptors) for characteristic: \(characteristic)")
+    }
     
     // Uncomment the below if you want to recieve updates for a characteristic, like say, the battery for a FitBit Flex.
 //    func peripheral(peripheral: CBPeripheral!, didUpdateValueForCharacteristic characteristic: CBCharacteristic!, error: NSError!) {
@@ -70,14 +100,32 @@ class PeripheralViewController: UIViewController, CBPeripheralDelegate, UITableV
 //        }
 //    }
     
-    func peripheralDidUpdateRSSI(peripheral: CBPeripheral!, error: NSError!) {
+//    func peripheralDidUpdateRSSI(peripheral: CBPeripheral!, error: NSError!) {
+//        println("Did update RSSI.")
+//        if let error = error {
+//            println("Error getting RSSI: \(error)")
+//            RSSILabel.text = "Error getting RSSI."
+//        }
+//        else {
+//            RSSILabel.text = "\(peripheral.RSSI)"
+//        }
+//    }
+    
+    func peripheral(peripheral: CBPeripheral!, didReadRSSI RSSI: NSNumber!, error: NSError!) {
+        self.RSSIRefreshTimer?.invalidate()
         println("Did update RSSI.")
+        let displayText: String
         if let error = error {
             println("Error getting RSSI: \(error)")
-            RSSILabel.text = "Error getting RSSI."
+            displayText = "Error getting RSSI."
         }
         else {
-            RSSILabel.text = "\(peripheral.RSSI)"
+            displayText = "\(RSSI)"
+        }
+        
+        dispatchMain {
+            self.RSSILabel.text = displayText
+            self.RSSIRefreshTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("refreshRSSI"), userInfo: nil, repeats: false)
         }
     }
     

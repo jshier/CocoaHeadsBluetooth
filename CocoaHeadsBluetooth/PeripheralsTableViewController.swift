@@ -9,12 +9,57 @@
 import UIKit
 import CoreBluetooth
 
+func dispatchMain(block: dispatch_block_t) {
+    dispatch_async(dispatch_get_main_queue(), block)
+}
+
+extension Bool {
+    var stringValue: String {
+        if self {
+            return "Yes"
+        }
+        else {
+            return "No"
+        }
+    }
+}
+
+struct BluetoothState {
+    let managerState: CBCentralManagerState
+    let description: String
+    let isBluetoothEnabled: Bool
+    
+    init(managerState: CBCentralManagerState) {
+        self.managerState = managerState
+        switch managerState {
+        case .PoweredOff:
+            description = "Bluetooth hardware powered off."
+            isBluetoothEnabled = false
+        case .PoweredOn:
+            description = "Bluetooth hardware powered on."
+            isBluetoothEnabled = true
+        case .Resetting:
+            description = "Bluetooth hardware is resetting."
+            isBluetoothEnabled = false
+        case .Unauthorized:
+            description = "Bluetooth hardware is unauthorized."
+            isBluetoothEnabled = false
+        case .Unsupported:
+            description = "Bluetooth hardware is unsupported."
+            isBluetoothEnabled = false
+        case .Unknown:
+            description = "Bluetooth hardware state is unknown."
+            isBluetoothEnabled = false
+        }
+    }
+}
+
 struct Peripheral {
     var peripheral: CBPeripheral
     var name: String?
     var UUID: String
     var RSSI: String
-    var connectable = "No"
+    var connectable = false
     
     init(peripheral: CBPeripheral, RSSI: String, advertisementDictionary: NSDictionary) {
         self.peripheral = peripheral
@@ -22,12 +67,13 @@ struct Peripheral {
         UUID = peripheral.identifier.UUIDString
         self.RSSI = RSSI
         if let isConnectable = advertisementDictionary[CBAdvertisementDataIsConnectable] as? NSNumber {
-            connectable = (isConnectable.boolValue) ? "Yes" : "No"
+            connectable = isConnectable.boolValue
         }
     }
 }
 
 class PeripheralsTableViewController: UITableViewController, CBCentralManagerDelegate {
+    let managerQueue = dispatch_queue_create("com.detroitlabs.cocoaheadsbluetooth.bluetoothmanager", DISPATCH_QUEUE_SERIAL)
     var manager: CBCentralManager!
     var isBluetoothEnabled = false
     var visiblePeripheralUUIDs = NSMutableOrderedSet()
@@ -39,13 +85,21 @@ class PeripheralsTableViewController: UITableViewController, CBCentralManagerDel
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        manager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionShowPowerAlertKey: true])
+        //manager = CBCentralManager(delegate: self, queue: managerQueue, options: [CBCentralManagerOptionShowPowerAlertKey: true])
+        BluetoothManager.sharedManager.bluetoothStateCallback = { state in
+            println("State updated to: \(state.description)")
+        }
     }
+    
+    
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
-        manager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionShowPowerAlertKey: true])
+        //manager = CBCentralManager(delegate: self, queue: managerQueue, options: [CBCentralManagerOptionShowPowerAlertKey: true])
+        BluetoothManager.sharedManager.bluetoothStateCallback = { state in
+            println("State updated to: \(state.description)")
+        }
     }
     
     override func viewDidLoad() {
@@ -99,7 +153,9 @@ class PeripheralsTableViewController: UITableViewController, CBCentralManagerDel
         case .PoweredOn:
             printString = "Bluetooth hardware powered on."
             isBluetoothEnabled = true
-            startScanning()
+            dispatchMain {
+                self.startScanning()
+            }
         case .Resetting:
             printString = "Bluetooth hardware is resetting."
             isBluetoothEnabled = false
@@ -121,16 +177,20 @@ class PeripheralsTableViewController: UITableViewController, CBCentralManagerDel
         println("Peripheral found with name: \(peripheral.name)\nUUID: \(peripheral.identifier.UUIDString)\nRSSI: \(RSSI)\nAdvertisement Data: \(advertisementData)")
         visiblePeripheralUUIDs.addObject(peripheral.identifier.UUIDString)
         visiblePeripherals[peripheral.identifier.UUIDString] = Peripheral(peripheral: peripheral, RSSI: RSSI.stringValue, advertisementDictionary: advertisementData)
-        tableView.reloadData()
+        dispatchMain {
+            self.tableView.reloadData()
+        }
     }
     
     func centralManager(central: CBCentralManager!, didConnectPeripheral peripheral: CBPeripheral!) {
         println("Peripheral connected: \(peripheral.name ?? peripheral.identifier.UUIDString)")
-        connectionAttemptTimer?.invalidate()
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let peripheralViewController = storyboard.instantiateViewControllerWithIdentifier("PeripheralViewController") as! PeripheralViewController
-        peripheralViewController.peripheral = peripheral
-        navigationController?.pushViewController(peripheralViewController, animated: true)
+        dispatchMain {
+            self.connectionAttemptTimer?.invalidate()
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let peripheralViewController = storyboard.instantiateViewControllerWithIdentifier("PeripheralViewController") as! PeripheralViewController
+            peripheralViewController.peripheral = peripheral
+            self.navigationController?.pushViewController(peripheralViewController, animated: true)
+        }
     }
     
     func centralManager(central: CBCentralManager!, didDisconnectPeripheral peripheral: CBPeripheral!, error: NSError!) {
@@ -147,7 +207,9 @@ class PeripheralsTableViewController: UITableViewController, CBCentralManagerDel
             println("Successfully disconnected from peripheral: \(peripheral.name ?? peripheral.identifier.UUIDString)")
         }
         if let selectedIndexPath = tableView.indexPathForSelectedRow() {
-            tableView.deselectRowAtIndexPath(selectedIndexPath, animated: true)
+            dispatchMain {
+                self.tableView.deselectRowAtIndexPath(selectedIndexPath, animated: true)
+            }
         }
     }
     
@@ -164,13 +226,10 @@ class PeripheralsTableViewController: UITableViewController, CBCentralManagerDel
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("PeripheralCell", forIndexPath: indexPath) as! PeripheralTableViewCell
         
-        if let visibleUUID = visiblePeripheralUUIDs[indexPath.row] as? String {
-            if let visiblePeripheral = visiblePeripherals[visibleUUID] {
-                if visiblePeripheral.connectable == "No" {
-                    cell.accessoryType = .None
-                }
-                cell.setupWithPeripheral(visiblePeripheral)
-            }
+        if let visibleUUID = visiblePeripheralUUIDs[indexPath.row] as? String,
+            visiblePeripheral = visiblePeripherals[visibleUUID] {
+            
+            cell.setupWithPeripheral(visiblePeripheral)
         }
 
         return cell
@@ -179,7 +238,7 @@ class PeripheralsTableViewController: UITableViewController, CBCentralManagerDel
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if let selectedUUID = visiblePeripheralUUIDs[indexPath.row] as? String {
             if let selectedPeripheral = visiblePeripherals[selectedUUID] {
-                if selectedPeripheral.connectable == "Yes" {
+                if selectedPeripheral.connectable {
                     connectedPeripheral = selectedPeripheral.peripheral
                     connectionAttemptTimer = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: Selector("timeoutPeripheralConnectionAttempt"), userInfo: nil, repeats: false)
                     manager.connectPeripheral(connectedPeripheral, options: nil)
