@@ -24,24 +24,23 @@ class PeripheralViewController: UIViewController, CBPeripheralDelegate, UITableV
     }
     
     override func viewDidAppear(animated: Bool) {
-        println("Peripheral: \(peripheral)")
+        print("Peripheral: \(peripheral)")
         
         nameLabel.text = peripheral.name ?? "No Name"
         UUIDLabel.text = peripheral.identifier.UUIDString
-        RSSILabel.text = "\(peripheral.RSSI)"
         
         peripheral.delegate = self
         peripheral.readRSSI()
         peripheral.discoverServices(nil)
     }
     
-    func peripheral(peripheral: CBPeripheral!, didDiscoverServices error: NSError!) {
-        println("Did discover services.")
+    func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
+        print("Did discover services.")
         if let error = error {
-            println(error)
+            print(error)
         }
         else {
-            println("\(peripheral.services)")
+            print("\(peripheral.services)")
             tableView.reloadData()
         }
         
@@ -70,21 +69,25 @@ class PeripheralViewController: UIViewController, CBPeripheralDelegate, UITableV
 //        }
 //    }
     
-    func peripheralDidUpdateRSSI(peripheral: CBPeripheral!, error: NSError!) {
-        println("Did update RSSI.")
+    func peripheral(peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: NSError?) {
+        print("Did read RSSI.")
         if let error = error {
-            println("Error getting RSSI: \(error)")
+            print("Error getting RSSI: \(error)")
             RSSILabel.text = "Error getting RSSI."
         }
         else {
-            RSSILabel.text = "\(peripheral.RSSI)"
+            RSSILabel.text = "\(RSSI.integerValue)"
         }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("ServiceCell", forIndexPath: indexPath) as! UITableViewCell
-        let service = peripheral.services[indexPath.row] as! CBService
-        println("Service UUID Description: \(service.UUID.description)")
+        guard let services = peripheral.services else {
+            return UITableViewCell()
+        }
+        
+        let cell = tableView.dequeueReusableCellWithIdentifier("ServiceCell", forIndexPath: indexPath)
+        let service = services[indexPath.row]
+        print("Service UUID Description: \(service.UUID.description)")
         cell.textLabel?.text = service.UUID.description
         
         return cell
